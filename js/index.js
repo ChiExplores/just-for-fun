@@ -1,11 +1,9 @@
 const video = document.getElementById("myvideo");
-const handimg = document.getElementById("handimage");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 let trackButton = document.getElementById("trackbutton");
 let updateNote = document.getElementById("updatenote");
 
-let imgindex = 1;
 let isVideo = false;
 let model = null;
 
@@ -20,6 +18,13 @@ const modelParams = {
 };
 
 function startVideo() {
+  // image(video, 0, 0);
+
+  // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
+  // video.size(200, 200);
+
+  // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
+  // video.hide();
   handTrack.startVideo(video).then(function (status) {
     console.log("video started", status);
     if (status) {
@@ -71,6 +76,5 @@ handTrack.load(modelParams).then((lmodel) => {
   model = lmodel;
   console.log(model);
   updateNote.innerText = "Loaded Model!";
-  runDetectionImage(handimg);
   trackButton.disabled = false;
 });
