@@ -17,7 +17,7 @@ function setup() {
   video = createCapture(VIDEO);
 
   // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
-  video.size(640, 480);
+  video.size(200, 200);
 
   // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
   video.hide();
@@ -27,5 +27,9 @@ function draw() {
 
   // Display the video just like an image! 
   image(video, 0, 0);
+
+  // const img = document.getElementById('img');
+  // const model = load();
+  // const predictions = model.detect(img);
 }
 
