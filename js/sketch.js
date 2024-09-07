@@ -6,7 +6,6 @@ CHALLENGES
 1. Can you make a grid from the video input, drawing the image a bunch of times?
 */
 
-
 // Like an image, we need a variable to connect our webcam to our sketch
 let video;
 
@@ -24,12 +23,10 @@ function setup() {
 }
 
 function draw() {
-
-  // Display the video just like an image! 
+  // Display the video just like an image!
   image(video, 0, 0);
 
   // const img = document.getElementById('img');
   // const model = load();
   // const predictions = model.detect(img);
 }
-
