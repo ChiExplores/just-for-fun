@@ -2,7 +2,7 @@
   "name": "just-for-fun",
   "version": "1.0.0",
   "description": "Just For Fun Team building a creative interactive experience for Honolulu Tech Week 2024",
-  "main": "hand-detect.js",
+  "main": "scripts/hand-detect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
