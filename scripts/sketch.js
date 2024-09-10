@@ -11,7 +11,7 @@ CHALLENGES
 let video2;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    const canvas = createCanvas(windowWidth, windowHeight);
 
     // Create a video capture (aka webcam input)
     video2 = createCapture(VIDEO);
@@ -19,6 +19,15 @@ function setup() {
     // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
     video2.size(640, 480);
 
+    // Position the canvas.
+    canvas.position(500, 500);
+
+    background(200);
+
+    // Draw a diagonal line.
+    line(0, 0, width, height);
+
+    describe('A diagonal line drawn from top-left to bottom-right on a gray background.');
     // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
     video2.hide();
 }

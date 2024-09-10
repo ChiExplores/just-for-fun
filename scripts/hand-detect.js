@@ -7,15 +7,13 @@ let updateNote = document.getElementById("updatenote");
 
 let isVideo = false;
 let model = null;
-let wentAboveThresholdAt = null;
-let handThresholdMap = new Map();
+let timeMap = new Map();
 const objectBox = [0, 0, 200, 200];
-const threshold = 0.8;
 const requiredTime = 2000;
 
 const modelParams = {
   flipHorizontal: true, // flip e.g for video
-  maxNumBoxes: 20, // maximum number of boxes to detect
+  maxNumBoxes: 5, // maximum number of boxes to detect
   iouThreshold: 0.5, // ioU threshold for non-max suppression
   scoreThreshold: 0.6, // confidence threshold for predictions.
 };
@@ -68,15 +66,15 @@ function runDetection() {
     // We can determine by the bounding box of the hand or the center point of the hand's bbox
     // Easiest state is to use the center point of the hand
     predictions.forEach((prediction, i) => {
-      if (prediction.label === "open" && prediction.score > threshold) {
+      if (prediction.label === "open") {
         if (isHandWithinBbox(prediction.bbox, objectBox)) {
-          if (!handThresholdMap.get(i)) {
-            console.log("SET THRESHOLD", i);
-            handThresholdMap.set(i, Date.now());
-          } else if (handThresholdMap.get(i) + requiredTime <= Date.now()) {
+          if (!timeMap.get(i)) {
+            console.log("START TIME FOR", i);
+            timeMap.set(i, Date.now());
+          } else if (timeMap.get(i) + requiredTime <= Date.now()) {
             // Success!
             console.log("was above threshold for required time!", i);
-            handThresholdMap.set(i, null);
+            timeMap.set(i, null);
           }
         }
       }
