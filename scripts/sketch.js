@@ -8,11 +8,61 @@ CHALLENGES
 
 
 // Like an image, we need a variable to connect our webcam to our sketch
+
+function getRandomInt(max, min = 0) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 let video;
 let i = 0;
+let endangeredSpecies = [
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: -100,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: -500,
+    fallingRate: getRandomInt(3, 1),
+  },
+]
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  frameRate(30);
 
   // Create a video capture (aka webcam input)
   // video = createCapture(VIDEO);
@@ -45,27 +95,27 @@ function setup() {
 
   circle(window.windowWidth, window.windowHeight, 50);
 
-
-  // Bottom line.
-  // textAlign(LEFT);
-  text('IJKL', 50, 70);
 }
 
 function draw() {
   background(200);
-  push();
 
+  for (let species of endangeredSpecies) {
+    push();
+    text(species.name, species.x, species.y);
+    species.y += species.fallingRate;
+    console.log(species.fallingRate);
 
-  i += 1;
-  text('EFGH', 100, 100 + i);
-  console.log(i);
-  // Display the video just like an image! 
-  // image(video, 0, 0);
-  pop();
+    if (species.y >= window.innerHeight) {
+      species.y = 0;
+      species.x = getRandomInt(window.innerWidth);
+    }
+
+    pop();
+  }
+
 }
 
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
+
 
