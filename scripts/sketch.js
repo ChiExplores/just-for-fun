@@ -7,21 +7,67 @@ CHALLENGES
 */
 
 // Like an image, we need a variable to connect our webcam to our sketch
-let video2;
+
+function getRandomInt(max, min = 0) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+let video;
+let i = 0;
+let endangeredSpecies = [
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: 0,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: "O'hia",
+    description: 'description of flower here',
+    x: getRandomInt(window.outerWidth),
+    y: -100,
+    fallingRate: getRandomInt(3, 1),
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    x: getRandomInt(window.outerWidth),
+    y: -500,
+    fallingRate: getRandomInt(3, 1),
+  },
+]
+
 
 function setup() {
-  const canvas = createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight);
+  frameRate(30);
 
   // Create a video capture (aka webcam input)
-  video2 = createCapture(VIDEO);
+  // video = createCapture(VIDEO);
 
   // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
-  video2.size(640, 480);
-
-  // Position the canvas.
-  canvas.position(500, 500);
-
-  background(200);
+  // video.size(640, 480);
 
   // Draw a diagonal line.
   line(0, 0, width, height);
@@ -30,10 +76,51 @@ function setup() {
     "A diagonal line drawn from top-left to bottom-right on a gray background.",
   );
   // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
-  video2.hide();
+  // video.hide();
+
+
+  // hawaiian texts
+
+
+
+
+  //TODO create list of 6 items and loop through each word and randomly place them on screen 
+  // create an array of maps of items
+  // each item has random x,y to save 
+  // once the item reached the bottom, reset word 
+
+  // Draw a vertical line.
+  strokeWeight(0.5);
+  line(50, 0, 50, 100);
+
+
+  // Top line.
+  textSize(16);
+  text('ABCD', 50, 30);
+
+  circle(window.windowWidth, window.windowHeight, 50);
+
 }
 
 function draw() {
-  // Display the video just like an image!
-  image(video2, 0, 0);
+  background(200);
+
+  for (let species of endangeredSpecies) {
+    push();
+    text(species.name, species.x, species.y);
+    species.y += species.fallingRate;
+    console.log(species.fallingRate);
+
+    if (species.y >= window.innerHeight) {
+      species.y = 0;
+      species.x = getRandomInt(window.innerWidth);
+    }
+
+    pop();
+  }
+
 }
+
+
+
+
