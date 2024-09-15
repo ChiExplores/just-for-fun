@@ -11,7 +11,7 @@ CHALLENGES
 function getRandomInt(max, min = 0) {
   return Math.floor(Math.random() * (max - min) + min);
 }
-let video;
+
 let i = 0;
 let endangeredSpecies = [
   {
@@ -58,24 +58,21 @@ let endangeredSpecies = [
   },
 ]
 
+let fontRegular;
+function preload() {
+  fontRegular = loadFont('/../assets/PlaypenSans-Regular.ttf');
+}
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  frameRate(60);
-
-  // Create a video capture (aka webcam input)
-  // video = createCapture(VIDEO);
-
-  // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
-  // video.size(640, 480);
-
+  frameRate(30);
 }
 
 function draw() {
-  // background(500);
-  dotGrid();
-  textFont('Courier New');
+  background(500);
+
+  textFont(fontRegular);
   for (let species of endangeredSpecies) {
     push();
     text(species.name, species.x, species.y);
@@ -86,35 +83,7 @@ function draw() {
       species.y = 0;
       species.x = getRandomInt(window.innerWidth);
     }
-
     pop();
   }
 
 }
-
-
-let xScale = 0.015;
-let yScale = 0.02;
-function dotGrid() {
-  background(255);
-  noStroke();
-  fill(0);
-
-  // Get the current gap and offset values from the sliders
-  gap = 5;
-  offset = 1;
-
-  // Loop through x and y coordinates, at increments set by gap
-  for (let x = gap / 2; x < width; x += gap) {
-    for (let y = gap / 2; y < height; y += gap) {
-      // Calculate noise value using scaled and offset coordinates
-      let noiseValue = noise((x + offset) * xScale, (y + offset) * yScale);
-
-      // Since noiseValue will be 0-1, multiply it by gap to set diameter to
-      // between 0 and the size of the gap between circles
-      let diameter = noiseValue * gap;
-      circle(x, y, diameter);
-    }
-  }
-}
-
