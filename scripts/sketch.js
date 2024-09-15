@@ -61,7 +61,8 @@ let endangeredSpecies = [
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  frameRate(30);
+
+  frameRate(60);
 
   // Create a video capture (aka webcam input)
   // video = createCapture(VIDEO);
@@ -69,42 +70,12 @@ function setup() {
   // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
   // video.size(640, 480);
 
-  // Draw a diagonal line.
-  line(0, 0, width, height);
-
-  describe(
-    "A diagonal line drawn from top-left to bottom-right on a gray background.",
-  );
-  // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
-  // video.hide();
-
-
-  // hawaiian texts
-
-
-
-
-  //TODO create list of 6 items and loop through each word and randomly place them on screen 
-  // create an array of maps of items
-  // each item has random x,y to save 
-  // once the item reached the bottom, reset word 
-
-  // Draw a vertical line.
-  strokeWeight(0.5);
-  line(50, 0, 50, 100);
-
-
-  // Top line.
-  textSize(16);
-  text('ABCD', 50, 30);
-
-  circle(window.windowWidth, window.windowHeight, 50);
-
 }
 
 function draw() {
-  background(200);
-
+  // background(500);
+  dotGrid();
+  textFont('Courier New');
   for (let species of endangeredSpecies) {
     push();
     text(species.name, species.x, species.y);
@@ -122,5 +93,28 @@ function draw() {
 }
 
 
+let xScale = 0.015;
+let yScale = 0.02;
+function dotGrid() {
+  background(255);
+  noStroke();
+  fill(0);
 
+  // Get the current gap and offset values from the sliders
+  gap = 5;
+  offset = 1;
+
+  // Loop through x and y coordinates, at increments set by gap
+  for (let x = gap / 2; x < width; x += gap) {
+    for (let y = gap / 2; y < height; y += gap) {
+      // Calculate noise value using scaled and offset coordinates
+      let noiseValue = noise((x + offset) * xScale, (y + offset) * yScale);
+
+      // Since noiseValue will be 0-1, multiply it by gap to set diameter to
+      // between 0 and the size of the gap between circles
+      let diameter = noiseValue * gap;
+      circle(x, y, diameter);
+    }
+  }
+}
 
