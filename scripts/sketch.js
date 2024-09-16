@@ -1,12 +1,3 @@
-/*
-WEBCAM INPUT
-Getting webcam input with p5.js is super easy! We create a variable for it, start the capture in setup(), and can display the result with the image() command! In upcoming examples, we'll also see how we can access the pixels from the webcam.
-
-CHALLENGES
-1. Can you make a grid from the video input, drawing the image a bunch of times?
-*/
-
-// Like an image, we need a variable to connect our webcam to our sketch
 
 function getRandomInt(max, min = 0) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -81,10 +72,13 @@ let endangeredSpecies = [
   },
 ]
 
-// let fontRegular;
-// function preload() {
-//   fontRegular = loadFont('assets/PlaypenSans-Regular.ttf');
-// }
+let fontRegular;
+let img;
+
+function preload() {
+  fontRegular = loadFont('assets/PlaypenSans-Regular.ttf');
+  img = loadImage('assets/loadImage.png');
+}
 
 
 function setup() {
@@ -94,13 +88,13 @@ function setup() {
 
 
 let i = 0;
-
 function draw() {
-  background(500);
-  i += 1;
-  console.log(i);
 
-  textFont('ariel');
+  background(500);
+  textFont(fontRegular, 20);
+
+  i += 1;
+
   for (let species of endangeredSpecies) {
     push();
     if (!species.clicked) {
@@ -109,9 +103,10 @@ function draw() {
       if (i === species.counter + 50) {
         species.clicked = false;
       }
+      image(img, species.descriptionX, species.descriptionY);
       text(species.description, species.descriptionX, species.descriptionY);
-      console.log('showng descripi', species.description, species.descriptionX, species.descriptionY)
     }
+
     species.nameY += species.fallingRate;
     if (species.nameY >= window.innerHeight) {
       species.nameY = 0;
@@ -122,16 +117,18 @@ function draw() {
 
 }
 
+
 function mouseClicked() {
-  console.log('mouse clicked', mouseX, mouseY);
+
   for (let species of endangeredSpecies) {
     if (species.nameX - 50 <= mouseX && species.nameX + 50 >= mouseX && mouseY >= species.nameY - 100 && mouseY <= species.nameY + 100) {
       species.clicked = true;
-      species.counter = i;
+      species.counter = i; /** what does this do again? not seeing species.counter used again */
       species.descriptionX = species.nameX;
       species.descriptionY = species.nameY;
       species.nameY = -100
     }
   }
+
 }
 
