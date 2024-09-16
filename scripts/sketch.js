@@ -14,9 +14,10 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
   {
-    name: 'Akikiki',
+    name: "'Akikiki",
     description: 'description of bird here',
     nameX: getRandomInt(window.outerWidth),
     nameY: 0,
@@ -25,6 +26,7 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
   {
     name: "O'hia",
@@ -36,6 +38,7 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
   {
     name: 'Akikiki',
@@ -47,6 +50,7 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
   {
     name: "O'hia",
@@ -58,6 +62,7 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
   {
     name: 'Akikiki',
@@ -69,6 +74,7 @@ let endangeredSpecies = [
     fallingRate: getRandomInt(3, 1),
     clicked: false,
     counter: 0,
+    img: 'assets/ohia.png',
   },
 ]
 
@@ -77,13 +83,15 @@ let img;
 
 function preload() {
   fontRegular = loadFont('assets/PlaypenSans-Regular.ttf');
-  img = loadImage('assets/loadImage.png');
+  img = loadImage('assets/ohia.png');
 }
+
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(10);
+
 }
 
 
@@ -97,13 +105,16 @@ function draw() {
 
   for (let species of endangeredSpecies) {
     push();
+    species.img = img;
     if (!species.clicked) {
       text(species.name, species.nameX, species.nameY);
     } else {
       if (i === species.counter + 50) {
         species.clicked = false;
       }
-      image(img, species.descriptionX, species.descriptionY);
+      // img = loadImage(species.img);
+      console.log('IMG', species.img);
+      image(species.img, species.descriptionX, species.descriptionY, 250, 250);
       text(species.description, species.descriptionX, species.descriptionY);
     }
 
@@ -121,7 +132,7 @@ function draw() {
 function mouseClicked() {
 
   for (let species of endangeredSpecies) {
-    if (species.nameX - 50 <= mouseX && species.nameX + 50 >= mouseX && mouseY >= species.nameY - 100 && mouseY <= species.nameY + 100) {
+    if (species.nameX - 30 <= mouseX && species.nameX + 30 >= mouseX && mouseY >= species.nameY - 30 && mouseY <= species.nameY + 30) {
       species.clicked = true;
       species.counter = i; /** what does this do again? not seeing species.counter used again */
       species.descriptionX = species.nameX;
