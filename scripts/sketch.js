@@ -12,78 +12,126 @@ function getRandomInt(max, min = 0) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-let i = 0;
 let endangeredSpecies = [
   {
     name: "O'hia",
     description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
     fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
   },
   {
     name: 'Akikiki',
     description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
     fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
+  },
+  {
+    name: "O'hia",
+    description: 'description of bird here',
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
+    fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
+  },
+  {
+    name: 'Akikiki',
+    description: 'description of bird here',
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
+    fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
   },
   {
     name: "O'hia",
     description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
     fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
   },
   {
     name: 'Akikiki',
     description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
+    nameX: getRandomInt(window.outerWidth),
+    nameY: 0,
+    descriptionX: 0,
+    descriptionY: 0,
     fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: "O'hia",
-    description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: -100,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: -500,
-    fallingRate: getRandomInt(3, 1),
+    clicked: false,
+    counter: 0,
   },
 ]
 
-let fontRegular;
-function preload() {
-  fontRegular = loadFont('/../assets/PlaypenSans-Regular.ttf');
-}
+// let fontRegular;
+// function preload() {
+//   fontRegular = loadFont('assets/PlaypenSans-Regular.ttf');
+// }
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  frameRate(30);
+  frameRate(10);
 }
+
+
+let i = 0;
 
 function draw() {
   background(500);
+  i += 1;
+  console.log(i);
 
-  textFont(fontRegular);
+  textFont('ariel');
   for (let species of endangeredSpecies) {
     push();
-    text(species.name, species.x, species.y);
-    species.y += species.fallingRate;
-    console.log(species.fallingRate);
-
-    if (species.y >= window.innerHeight) {
-      species.y = 0;
-      species.x = getRandomInt(window.innerWidth);
+    if (!species.clicked) {
+      text(species.name, species.nameX, species.nameY);
+    } else {
+      if (i === species.counter + 50) {
+        species.clicked = false;
+      }
+      text(species.description, species.descriptionX, species.descriptionY);
+      console.log('showng descripi', species.description, species.descriptionX, species.descriptionY)
+    }
+    species.nameY += species.fallingRate;
+    if (species.nameY >= window.innerHeight) {
+      species.nameY = 0;
+      species.nameX = getRandomInt(window.innerWidth);
     }
     pop();
   }
 
 }
+
+function mouseClicked() {
+  console.log('mouse clicked', mouseX, mouseY);
+  for (let species of endangeredSpecies) {
+    if (species.nameX - 50 <= mouseX && species.nameX + 50 >= mouseX && mouseY >= species.nameY - 100 && mouseY <= species.nameY + 100) {
+      species.clicked = true;
+      species.counter = i;
+      species.descriptionX = species.nameX;
+      species.descriptionY = species.nameY;
+      species.nameY = -100
+    }
+  }
+}
+
