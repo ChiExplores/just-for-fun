@@ -1,152 +1,107 @@
-
-function getRandomInt(max, min = 0) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-let endangeredSpecies = [
+let fontStyle;
+const WIDTH = window.innerWidth;
+const HEIGHT = window.innerHeight;
+const TIME_BUFFER = 50;
+const HAWAIIAN_WORDS = setCoordinates([
   {
-    name: "O'hia",
-    description: 'description of flower here',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/ohia.png',
-    img: '',
+    hawaiian: "wai",
+    english: "water",
   },
   {
-    name: "'‘I‘iwi",
-    description: 'description of bird here',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/iiwi-AGAMI.png',
-    img: '',
+    hawaiian: "ahi",
+    english: "fire",
   },
   {
-    name: "ka palaoa",
-    description: 'false killer whales',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/False-killer-whales-Doug Perrine.png',
-    img: '',
+    hawaiian: "iʻa",
+    english: "fish",
   },
   {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/akikiki-Jason Vassallo.png',
-    img: '',
+    hawaiian: "manu",
+    english: "bird",
   },
   {
-    name: "O'hia",
-    description: 'description of flower here',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/ohia.png',
-    img: '',
+    hawaiian: "pua",
+    english: "flower",
   },
   {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    nameX: getRandomInt(window.outerWidth),
-    nameY: 0,
-    descriptionX: 0,
-    descriptionY: 0,
-    fallingRate: getRandomInt(3, 1),
-    clicked: false,
-    counter: 0,
-    imgURL: 'assets/ohia.png',
-    img: '',
+    hawaiian: "moana",
+    english: "flower",
   },
-]
-
-let fontRegular;
+]);
+const WORD_WIDTH_BUFFER = 30;
+const WORD_HEIGHT_BUFFER = 30;
 
 function preload() {
-  let img;
-  fontRegular = loadFont('assets/PlaypenSans-Regular.ttf');
-  // img = loadImage('assets/ohia.png');
-  //loop through species and load image to species.img
-  for (let species of endangeredSpecies) {
-    img = loadImage(species.imgURL);
-    species.img = img;
-    console.log(species.img);
-  }
+  fontStyle = loadFont("assets/PlaypenSans-Regular.ttf");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  frameRate(10);
+  createCanvas(WIDTH, HEIGHT);
+  frameRate(30);
+  textFont(fontStyle, 20);
 }
 
-
-let i = 0;
 function draw() {
-
   background(500);
-  textFont(fontRegular, 20);
 
-  i += 1;
-
-  for (let species of endangeredSpecies) {
+  HAWAIIAN_WORDS.forEach((word) => {
     push();
-    if (!species.clicked) {
-      text(species.name, species.nameX, species.nameY);
+    if (!word.clicked) {
+      text(word.hawaiian, word.wordX, word.wordY);
     } else {
-      if (i === species.counter + 50) {
-        species.clicked = false;
+      if (word.timer <= 0) {
+        word.clicked = false;
+      } else {
+        word.timer -= 1;
       }
-      image(species.img, species.descriptionX, species.descriptionY, 150, 150);
-      text(species.description, species.descriptionX, species.descriptionY);
+      console.log("SHOW PARTICLE EFFECT HERE FOR", word.hawaiian);
     }
 
-    species.nameY += species.fallingRate;
-    if (species.nameY >= window.innerHeight) {
-      species.nameY = 0;
-      species.nameX = getRandomInt(window.innerWidth);
+    word.wordY += word.fallingRate;
+    if (word.wordY >= HEIGHT) {
+      word.wordY = 0;
+      word.wordX = getRandomInt(0, WIDTH);
     }
     pop();
-  }
-
+  });
 }
-
 
 function mouseClicked() {
-
-  for (let species of endangeredSpecies) {
-    if (species.nameX - 30 <= mouseX && species.nameX + 30 >= mouseX && mouseY >= species.nameY - 30 && mouseY <= species.nameY + 30) {
-      species.clicked = true;
-      species.counter = i; /** what does this do again? not seeing species.counter used again */
-      species.descriptionX = species.nameX;
-      species.descriptionY = species.nameY;
-      species.nameY = -100
-      species.nameX = getRandomInt(window.innerWidth); /** added random X so it comes from diff position on x axis */
+  HAWAIIAN_WORDS.forEach((word) => {
+    if (isWordInBounds(word)) {
+      word.clicked = true;
+      word.timer = TIME_BUFFER;
+      word.descriptionX = word.wordX;
+      word.descriptionY = word.wordY;
+      word.wordY = -100;
+      word.wordX = getRandomInt(0, window.innerWidth);
     }
-  }
-
+  });
 }
 
+/** HELPER FUNCTIONS **/
+function setCoordinates(data) {
+  return data.map((datum) => ({
+    ...datum,
+    wordX: getRandomInt(0, WIDTH),
+    wordY: getRandomInt(-200, 0),
+    fallingRate: getRandomInt(1, 3),
+    animX: 0,
+    animY: 0,
+    timer: TIME_BUFFER,
+    clicked: false,
+  }));
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+function isWordInBounds(word) {
+  return (
+    word.wordX - WORD_WIDTH_BUFFER <= mouseX &&
+    word.wordX + WORD_WIDTH_BUFFER >= mouseX &&
+    mouseY >= word.wordY - WORD_HEIGHT_BUFFER &&
+    mouseY <= word.wordY + WORD_HEIGHT_BUFFER
+  );
+}
