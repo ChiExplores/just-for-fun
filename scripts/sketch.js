@@ -1,6 +1,4 @@
 let fontStyle;
-let fish = [];
-let xoff = 0;
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;

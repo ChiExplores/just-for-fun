@@ -107,6 +107,8 @@ class Fish {
   }
 }
 
+let fish = [];
+let xoff = 0;
 function drawFish() {
   for (let i = 0; i < fish.length; i++) {
     let x = map(noise(i + xoff), 0, 1, -0.1, 0.1);
