@@ -44,22 +44,26 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(WIDTH, HEIGHT);
+  let canvas = createCanvas(WIDTH, HEIGHT);
+  canvas.position(0, 45);
   frameRate(30);
   textFont(fontStyle, 20);
 
   // Setup fish counts
-  for (var i = 0; i < NUM_FISH; i++) {
-    fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
-  }
+  setupFish()
 }
+
+let faceX = 0;
+let faceY = 0;
 
 function draw() {
   background(500);
+  circle(faceX, faceY, 10);
 
   // Display hawaiian words on canvas
   HAWAIIAN_WORDS.forEach((word) => {
     push();
+    rect(word.wordX, word.wordY - WORD_HEIGHT_BUFFER, WORD_WIDTH_BUFFER, 2* WORD_HEIGHT_BUFFER);
     if (!word.clicked) {
       text(word.hawaiian, word.wordX, word.wordY);
     } else {
@@ -114,7 +118,7 @@ function getRandomInt(min, max) {
 
 function isWordInBounds(word) {
   return (
-    word.wordX - WORD_WIDTH_BUFFER <= mouseX &&
+    word.wordX <= mouseX &&
     word.wordX + WORD_WIDTH_BUFFER >= mouseX &&
     mouseY >= word.wordY - WORD_HEIGHT_BUFFER &&
     mouseY <= word.wordY + WORD_HEIGHT_BUFFER

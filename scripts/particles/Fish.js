@@ -118,3 +118,9 @@ function drawFish() {
   }
   xoff += 0.01;
 }
+
+function setupFish() {
+  for (var i = 0; i < NUM_FISH; i++) {
+    fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
+  }
+}
