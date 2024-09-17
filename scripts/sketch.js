@@ -1,126 +1,107 @@
-/*
-WEBCAM INPUT
-Getting webcam input with p5.js is super easy! We create a variable for it, start the capture in setup(), and can display the result with the image() command! In upcoming examples, we'll also see how we can access the pixels from the webcam.
+let fontStyle;
+const WIDTH = window.innerWidth;
+const HEIGHT = window.innerHeight;
+const TIME_BUFFER = 50;
+const HAWAIIAN_WORDS = setCoordinates([
+  {
+    hawaiian: "wai",
+    english: "water",
+  },
+  {
+    hawaiian: "ahi",
+    english: "fire",
+  },
+  {
+    hawaiian: "iʻa",
+    english: "fish",
+  },
+  {
+    hawaiian: "manu",
+    english: "bird",
+  },
+  {
+    hawaiian: "pua",
+    english: "flower",
+  },
+  {
+    hawaiian: "moana",
+    english: "flower",
+  },
+]);
+const WORD_WIDTH_BUFFER = 30;
+const WORD_HEIGHT_BUFFER = 30;
 
-CHALLENGES
-1. Can you make a grid from the video input, drawing the image a bunch of times?
-*/
-
-// Like an image, we need a variable to connect our webcam to our sketch
-
-function getRandomInt(max, min = 0) {
-  return Math.floor(Math.random() * (max - min) + min);
+function preload() {
+  fontStyle = loadFont("assets/PlaypenSans-Regular.ttf");
 }
-let video;
-let i = 0;
-let endangeredSpecies = [
-  {
-    name: "O'hia",
-    description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: "O'hia",
-    description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: 0,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: "O'hia",
-    description: 'description of flower here',
-    x: getRandomInt(window.outerWidth),
-    y: -100,
-    fallingRate: getRandomInt(3, 1),
-  },
-  {
-    name: 'Akikiki',
-    description: 'description of bird here',
-    x: getRandomInt(window.outerWidth),
-    y: -500,
-    fallingRate: getRandomInt(3, 1),
-  },
-]
-
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(WIDTH, HEIGHT);
   frameRate(30);
-
-  // Create a video capture (aka webcam input)
-  // video = createCapture(VIDEO);
-
-  // Specify the resolution of the webcam input (too high and you may notice performance issues, especially if you're extracting info from it or adding filters)
-  // video.size(640, 480);
-
-  // Draw a diagonal line.
-  line(0, 0, width, height);
-
-  describe(
-    "A diagonal line drawn from top-left to bottom-right on a gray background.",
-  );
-  // In some browsers, you may notice that a second video appears onscreen! That's because p5js actually creates a <video> html element, which then is piped into the canvas – the added command below ensures we don't see it :)
-  // video.hide();
-
-
-  // hawaiian texts
-
-
-
-
-  //TODO create list of 6 items and loop through each word and randomly place them on screen 
-  // create an array of maps of items
-  // each item has random x,y to save 
-  // once the item reached the bottom, reset word 
-
-  // Draw a vertical line.
-  strokeWeight(0.5);
-  line(50, 0, 50, 100);
-
-
-  // Top line.
-  textSize(16);
-  text('ABCD', 50, 30);
-
-  circle(window.windowWidth, window.windowHeight, 50);
-
+  textFont(fontStyle, 20);
 }
 
 function draw() {
-  background(200);
+  background(500);
 
-  for (let species of endangeredSpecies) {
+  HAWAIIAN_WORDS.forEach((word) => {
     push();
-    text(species.name, species.x, species.y);
-    species.y += species.fallingRate;
-    console.log(species.fallingRate);
-
-    if (species.y >= window.innerHeight) {
-      species.y = 0;
-      species.x = getRandomInt(window.innerWidth);
+    if (!word.clicked) {
+      text(word.hawaiian, word.wordX, word.wordY);
+    } else {
+      if (word.timer <= 0) {
+        word.clicked = false;
+      } else {
+        word.timer -= 1;
+      }
+      console.log("SHOW PARTICLE EFFECT HERE FOR", word.hawaiian);
     }
 
+    word.wordY += word.fallingRate;
+    if (word.wordY >= HEIGHT) {
+      word.wordY = 0;
+      word.wordX = getRandomInt(0, WIDTH);
+    }
     pop();
-  }
-
+  });
 }
 
+function mouseClicked() {
+  HAWAIIAN_WORDS.forEach((word) => {
+    if (isWordInBounds(word)) {
+      word.clicked = true;
+      word.timer = TIME_BUFFER;
+      word.descriptionX = word.wordX;
+      word.descriptionY = word.wordY;
+      word.wordY = -100;
+      word.wordX = getRandomInt(0, window.innerWidth);
+    }
+  });
+}
 
+/** HELPER FUNCTIONS **/
+function setCoordinates(data) {
+  return data.map((datum) => ({
+    ...datum,
+    wordX: getRandomInt(0, WIDTH),
+    wordY: getRandomInt(-200, 0),
+    fallingRate: getRandomInt(1, 3),
+    animX: 0,
+    animY: 0,
+    timer: TIME_BUFFER,
+    clicked: false,
+  }));
+}
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
+function isWordInBounds(word) {
+  return (
+    word.wordX - WORD_WIDTH_BUFFER <= mouseX &&
+    word.wordX + WORD_WIDTH_BUFFER >= mouseX &&
+    mouseY >= word.wordY - WORD_HEIGHT_BUFFER &&
+    mouseY <= word.wordY + WORD_HEIGHT_BUFFER
+  );
+}
