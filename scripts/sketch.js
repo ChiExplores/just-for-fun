@@ -9,32 +9,32 @@ const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "wai",
     english: "water",
-    playAnimation: () => {}
+    playAnimation: () => {},
   },
   {
     hawaiian: "ahi",
     english: "fire",
-    playAnimation: () => {}
+    playAnimation: () => {},
   },
   {
     hawaiian: "iʻa",
     english: "fish",
-    playAnimation: drawFish
+    playAnimation: drawFish,
   },
   {
     hawaiian: "manu",
     english: "bird",
-    playAnimation: () => {}
+    playAnimation: () => {},
   },
   {
     hawaiian: "pua",
     english: "flower",
-    playAnimation: () => {}
+    playAnimation: () => {},
   },
   {
     hawaiian: "moana",
     english: "flower",
-    playAnimation: () => {}
+    playAnimation: () => {},
   },
 ]);
 const WORD_WIDTH_BUFFER = 50;
@@ -122,4 +122,3 @@ function isWordInBounds(word) {
     mouseY <= word.wordY + WORD_HEIGHT_BUFFER
   );
 }
-
