@@ -52,6 +52,10 @@ function setup() {
   for (var i = 0; i < NUM_FISH; i++) {
     fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
   }
+  //Setup Flower counts
+  for (var j = 0; j < 25; j++) {
+    flowers[j] = new Flower(random(5, 30));  //generate flowers 
+  }
 }
 
 function draw() {

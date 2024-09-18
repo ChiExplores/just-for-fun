@@ -7,9 +7,7 @@ let angle = 0;//put angle here!
 let flowers = []; //array of flowers
 
 function drawFlower() {
-  for (var j = 0; j < 25; j++) {
-    flowers[j] = new Flower(random(5, 30));  //generate flowers 
-  }
+
   angle += 0.021
 
   for (var h = 0; h < flowers.length; h++) {
