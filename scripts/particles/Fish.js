@@ -2,7 +2,7 @@
 
 var num = 2000;
 var noiseScale = 500,
-    noiseStrength = 1;
+  noiseStrength = 1;
 var particles = [num];
 
 function setupFish() {
@@ -41,13 +41,13 @@ class Particle {
   }
   move() {
     let angle =
-        noise(
-            this.loc.x / noiseScale,
-            this.loc.y / noiseScale,
-            frameCount / noiseScale,
-        ) *
-        TWO_PI *
-        noiseStrength; //0-2PI
+      noise(
+        this.loc.x / noiseScale,
+        this.loc.y / noiseScale,
+        frameCount / noiseScale,
+      ) *
+      TWO_PI *
+      noiseStrength; //0-2PI
     this.dir.x = cos(angle);
     this.dir.y = sin(angle);
     var vel = this.dir.copy();
@@ -59,10 +59,10 @@ class Particle {
     //float distance = dist(width/2, height/2, loc.x, loc.y);
     //if (distance>150) {
     if (
-        this.loc.x < 0 ||
-        this.loc.x > width ||
-        this.loc.y < 0 ||
-        this.loc.y > height
+      this.loc.x < 0 ||
+      this.loc.x > width ||
+      this.loc.y < 0 ||
+      this.loc.y > height
     ) {
       this.loc.x = random(width * 1.2);
       this.loc.y = random(height);
