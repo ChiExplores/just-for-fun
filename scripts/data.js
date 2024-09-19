@@ -32,7 +32,7 @@ const HAWAIIAN_WORDS = setupData([
     english: "stars",
     playAnimation: drawStars,
     setup: setupStars,
-    soundFile: "assets/flower.mp3",
+    soundFile: "assets/stars.mp3",
   },
 ]);
 
