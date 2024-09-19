@@ -1,27 +1,29 @@
 class Bird {
-  constructor(x, y) {
-    this.x = random(width * 0.25, width * 0.75);
-    this.y = random(height * 0.25, height * 0.75);
+  constructor(x, y, vx, vy) {
+    this.x = random(0, width);
+    this.y = random(0, height);
+    this.vx = random(2, 5);
+    this.vy = random(-2, 2);
   }
 
   fly() {
-    this.x = this.x + 5;
-    this.y = this.y + -2;
+    this.x += this.vx;
+    this.y += this.vy;
   }
 
   display() {
     {
-      fill(254, 32, 32);
-      stroke(254, 32, 32);
+      fill(255);
+      noStroke();
       triangle(
         this.x,
         this.y,
-        this.x + 5,
-        this.y + 11,
-        this.x + 5,
-        this.y - 10,
+        this.x + 10,
+        this.y + 22,
+        this.x + 10,
+        this.y - 20,
       );
-      ellipse(this.x, this.y, 12, 3);
+      ellipse(this.x, this.y, 24, 6);
     }
   }
 }

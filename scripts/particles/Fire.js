@@ -79,7 +79,7 @@ function drawFire() {
 
 function setupFire() {
   // Setup fire counts
-  for (var i = 0; i < NUM_BIRD; i++) {
-    fire[i] = new Fire(random(-10, 0), random(0, height));
+  for (var i = 0; i < NUM_FIRE; i++) {
+    fire[i] = new Fire(random(0, width), random(0, height));
   }
 }

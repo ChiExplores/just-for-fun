@@ -4,19 +4,23 @@ let song;
 function preload() {
   fontStyle = loadFont("assets/PlaypenSans-Regular.ttf");
   song = loadSound("assets/bg.mp3");
+  HAWAIIAN_WORDS.forEach((word) => {
+    console.log("loaded", word.soundFile);
+    word.sound = loadSound(word.soundFile);
+  });
 }
 
 function setup() {
   createCanvas(WIDTH, HEIGHT);
-  frameRate(30);
-  textFont(fontStyle, 20);
+  frameRate(FPS);
+  textFont(fontStyle, 30);
   HAWAIIAN_WORDS.forEach((word) => {
     word.setup();
   });
 }
 
 function draw() {
-  background(0);
+  background(0, 30);
   circle(predX, predY, 10);
   // Display hawaiian words on canvas
   HAWAIIAN_WORDS.forEach((word) => {
@@ -28,12 +32,17 @@ function draw() {
       if (word.timer <= 0) {
         word.clicked = false;
         word.fallingRate = random(1, 2);
+        word.sound.stop();
+        word.setup();
       } else {
         word.timer -= 1;
         word.fallingRate = 0;
         fill("red");
         text(word.english, word.descriptionX, word.descriptionY);
-        word.playAnimation(predX, predY);
+        word.playAnimation();
+        if (!word.sound.isPlaying()) {
+          word.sound.play();
+        }
       }
     }
 
@@ -48,7 +57,8 @@ function draw() {
 
 function mouseClicked() {
   if (!song.isPlaying()) {
-    // song.play();
+    song.play();
+    fullscreen(true);
   }
   HAWAIIAN_WORDS.forEach((word) => {
     if (isWordInBounds(word)) {

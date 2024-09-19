@@ -5,6 +5,7 @@ const numStars = 500;
 let stars = [];
 
 function drawStars() {
+  // background(0, 50);
   const acc = map(mouseX, 0, width, 0.005, 0.2);
 
   stars = stars.filter((star) => {
@@ -29,7 +30,7 @@ class Star {
   }
 
   isActive() {
-    return onScreen(this.prevPos.x, this.prevPos.y);
+    return onScreenStars(this.prevPos.x, this.prevPos.y);
   }
 
   update(acc) {
@@ -50,7 +51,7 @@ class Star {
   }
 }
 
-function onScreen(x, y) {
+function onScreenStars(x, y) {
   return x >= 0 && x <= width && y >= 0 && y <= height;
 }
 

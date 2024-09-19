@@ -70,6 +70,6 @@ class Flower {
 
 function setupFlowers() {
   for (var j = 0; j < NUM_FLOWER; j++) {
-    flowers[j] = new Flower(random(5, 30)); // generate flowers
+    flowers[j] = new Flower(random(50, 100)); // generate flowers
   }
 }
