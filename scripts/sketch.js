@@ -1,8 +1,9 @@
 let fontStyle;
+let song;
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
-const TIME_BUFFER = 200;
+const TIME_BUFFER = 400;
 const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "ahi",
@@ -85,6 +86,7 @@ const NUM_BIRD = 10;
 
 function preload() {
   fontStyle = loadFont("assets/PlaypenSans-Regular.ttf");
+  song = loadSound('assets/bg.mp3');
 }
 
 function setup() {
@@ -135,6 +137,9 @@ function draw() {
 }
 
 function mouseClicked() {
+  if (!song.isPlaying()) {
+    song.play();
+  }
   HAWAIIAN_WORDS.forEach((word) => {
     if (isWordInBounds(word)) {
       clickWord(word);
