@@ -70,6 +70,7 @@ class Fish {
     angleMode(DEGREES);
     translate(this.pos.x, this.pos.y);
     rotate(this.vel.heading() + 90);
+    angleMode(RADIANS);
     fill(100, 0, 200, map(this.dis, 0, 255, 255, 0));
     ellipse(this.h * 0.15, this.h * -0.25, this.w * 0.375, this.h * 0.175);
     ellipse(this.h * -0.15, this.h * -0.25, this.w * 0.375, this.h * 0.175);

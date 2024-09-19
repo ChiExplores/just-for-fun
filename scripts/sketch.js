@@ -7,12 +7,12 @@ const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "wai",
     english: "water",
-    playAnimation: () => {},
+    playAnimation: () => { },
   },
   {
     hawaiian: "ahi",
     english: "fire",
-    playAnimation: () => {},
+    playAnimation: drawFire,
   },
   {
     hawaiian: "iʻa",
@@ -22,17 +22,17 @@ const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "manu",
     english: "bird",
-    playAnimation: () => {},
+    playAnimation: () => { },
   },
   {
     hawaiian: "pua",
     english: "flower",
-    playAnimation: () => {},
+    playAnimation: drawFlower,
   },
   {
     hawaiian: "moana",
     english: "flower",
-    playAnimation: () => {},
+    playAnimation: () => { },
   },
 ]);
 const WORD_WIDTH_BUFFER = 50;
@@ -52,15 +52,21 @@ function setup() {
   for (var i = 0; i < NUM_FISH; i++) {
     fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
   }
+  //Setup Flower counts
+  for (var j = 0; j < 25; j++) {
+    flowers[j] = new Flower(random(5, 30));  //generate flowers 
+  }
 }
 
 function draw() {
-  background(500);
+  background(0);
+
 
   // Display hawaiian words on canvas
   HAWAIIAN_WORDS.forEach((word) => {
     push();
     if (!word.clicked) {
+      fill('white');
       text(word.hawaiian, word.wordX, word.wordY);
     } else {
       if (word.timer <= 0) {
@@ -68,7 +74,7 @@ function draw() {
       } else {
         word.timer -= 1;
       }
-      word.playAnimation();
+      word.playAnimation(mouseX, mouseY);
       console.log("SHOW PARTICLE EFFECT HERE FOR", word.hawaiian);
     }
 
