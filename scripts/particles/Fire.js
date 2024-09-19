@@ -2,29 +2,19 @@
  * Adapted from https://editor.p5js.org/TheSketchyGuy/sketches/t0TbA9KDA
  */
 
+let fire = [];
 let bugs = [];
 
-function drawFire(mouseX, mouseY) {
-  // loop through all the bugs (fire particles)
-  for (let i = bugs.length - 1; i >= 0; i--) {
-    bugs[i].move();
-    bugs[i].show();
-    bugs[i].shrink();
-
-    if (bugs[i].radius <= 0) {
-      bugs.splice(i, 1); // Remove dead ones
-    }
+class Fire {
+  constructor(x, y) {
+    this.x = random(width * 0.25, width * 0.75);
+    this.y = random(height * 0.25, height * 0.75);
   }
 
-  // Generate fire particles based on roast level
-  let x = mouseX;
-  let y = mouseY;
-  let radius;
-
-  let b = new Bug(x, y, random(20, 40));
-  let c = new Bug(x, y, random(10, 30));
-  bugs.push(b);
-  bugs.push(c);
+  move() {
+    this.x += random(-5, 5);
+    this.y -= random(1, 3);
+  }
 }
 
 class Bug {
@@ -53,11 +43,43 @@ class Bug {
 
   move() {
     this.x += random(-5, 5);
-    this.y -= random(1, 3);
+    this.y += random(-5, 5);
   }
 
   shrink() {
     // shrink size over time
     this.radius -= 0.4;
+  }
+}
+
+function drawFire() {
+  // loop through all the bugs (fire particles)
+  for (let i = 0; i < fire.length; i++) {
+    for (let j = bugs.length - 1; j >= 0; j--) {
+      bugs[j].move();
+      bugs[j].show();
+      bugs[j].shrink();
+
+      if (bugs[j].radius <= 0) {
+        bugs.splice(j, 1); // Remove dead ones
+      }
+    }
+
+    // Generate fire particles based on roast level
+    let x = fire[i].x;
+    let y = fire[i].y;
+    fire[i].move();
+
+    let b = new Bug(x, y, random(40, 80));
+    let c = new Bug(x, y, random(30, 90));
+    bugs.push(b);
+    bugs.push(c);
+  }
+}
+
+function setupFire() {
+  // Setup fire counts
+  for (var i = 0; i < NUM_BIRD; i++) {
+    fire[i] = new Fire(random(-10, 0), random(0, height));
   }
 }

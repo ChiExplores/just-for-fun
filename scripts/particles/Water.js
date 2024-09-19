@@ -52,9 +52,7 @@ function drawWater() {
   let temp = previous;
   previous = current;
   current = temp;
-  console.log("WATER PREVIOUS", previous);
 
-  // console.log('WATER PREVIOUS', previous)
   previous[mouseX][mouseY] = 1500;
   previous[mouseX - 50][mouseY - 50] = 1500;
   previous[mouseX + 25][mouseY + 20] = 1000;
