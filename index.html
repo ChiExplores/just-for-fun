@@ -1,29 +1,33 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-</head>
+  <body class="bx--body p20">
+    <div class="mb10">
+      <button
+        id="trackbutton"
+        class="bx--btn bx--btn--secondary"
+        type="button"
+        disabled
+      >
+        Toggle Video
+      </button>
+      -->
+      <div id="updatenote" class="updatenote mt10">loading model ..</div>
+    </div>
+    <video width="1600" height="900" class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
+    <canvas id="canvas" class="border canvasbox"></canvas>
 
-<body class="bx--body p20">
-  <div class="mb10">
-    <button id="trackbutton" class="bx--btn bx--btn--secondary" type="button" disabled>
-      Toggle Video
-    </button>
-    -->
-    <div id="updatenote" class="updatenote mt10">loading model ..</div>
-  </div>
-  <video class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
-  <canvas id="canvas" class="border canvasbox"></canvas>
-
-  <script src="node_modules/p5/lib/p5.min.js"></script>
-  <script src="node_modules/handtrackjs/dist/handtrack.min.js"></script>
-  <script src="scripts/particles/Fish.js"></script>
-  <script src="scripts/particles/Fire.js"></script>
-  <script src="scripts/particles/Flower.js"></script>
-  <script src="scripts/particles/Bird.js"></script>
-  <script src="scripts/sketch.js"></script>
-  <script src="scripts/hand-detect.js"></script>
-</body>
-
+    <script src="node_modules/p5/lib/p5.min.js"></script>
+    <script src="node_modules/handtrackjs/dist/handtrack.min.js"></script>
+    <script src="scripts/particles/Fish.js"></script>
+    <script src="scripts/particles/Fire.js"></script>
+    <script src="scripts/particles/Flower.js"></script>
+    <script src="scripts/particles/Stars.js"></script>
+    <script src="scripts/particles/Water.js"></script>
+    <script src="scripts/sketch.js"></script>
+    <script src="scripts/hand-detect.js"></script>
+  </body>
 </html>

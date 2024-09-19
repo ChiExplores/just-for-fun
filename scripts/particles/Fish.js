@@ -37,7 +37,7 @@ class Fish {
     rotate(this.vel.heading() + 90);
     angleMode(RADIANS);
     for (let i = 0; i < 17; i++) {
-      fill(150 - i * 7, 150 - i * 7, 200, map(this.dis, 0, 255, 255, 0));
+      fill(150, 150, 200, map(this.dis, 0, 255, 255, 0));
 
       ellipse(
         sin(this.xoff) * (i * this.varience),
@@ -118,4 +118,10 @@ function drawFish() {
     fish[i].render(x, y);
   }
   xoff += 0.01;
+}
+
+function setupFish() {
+  for (var i = 0; i < NUM_FISH; i++) {
+    fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
+  }
 }

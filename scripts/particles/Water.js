@@ -11,7 +11,6 @@
 // Algorithm: https://web.archive.org/web/20160418004149/http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
 
 function drawWater() {
-
   let cols;
   let rows;
   let current; // = new float[cols][rows];
@@ -19,18 +18,14 @@ function drawWater() {
 
   let dampening = 0.99;
 
-
-
   cols = width;
   rows = height;
 
   // The following line initializes a 2D cols-by-rows array with zeroes
   // in every array cell, and is equivalent to this Processing line:
-  current = new float[cols][rows];
-  current = new Array(cols).fill(0).map(n => new Array(rows).fill(10));
-  previous = new Array(cols).fill(0).map(n => new Array(rows).fill(20));
-
-
+  current = new float[cols][rows]();
+  current = new Array(cols).fill(0).map((n) => new Array(rows).fill(10));
+  previous = new Array(cols).fill(0).map((n) => new Array(rows).fill(20));
 
   loadPixels();
   for (let i = 1; i < cols - 1; i++) {
@@ -40,7 +35,7 @@ function drawWater() {
           previous[i + 1][j] +
           previous[i][j - 1] +
           previous[i][j + 1]) /
-        2 -
+          2 -
         current[i][j];
       current[i][j] = current[i][j] * dampening;
       // Unlike in Processing, the pixels array in p5.js has 4 entries
@@ -57,12 +52,10 @@ function drawWater() {
   let temp = previous;
   previous = current;
   current = temp;
-  console.log('WATER PREVIOUS', previous)
-
+  console.log("WATER PREVIOUS", previous);
 
   // console.log('WATER PREVIOUS', previous)
   previous[mouseX][mouseY] = 1500;
   previous[mouseX - 50][mouseY - 50] = 1500;
   previous[mouseX + 25][mouseY + 20] = 1000;
-
 }

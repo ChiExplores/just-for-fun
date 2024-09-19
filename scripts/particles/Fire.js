@@ -4,9 +4,7 @@
 
 let bugs = [];
 
-
 function drawFire(mouseX, mouseY) {
-
   // loop through all the bugs (fire particles)
   for (let i = bugs.length - 1; i >= 0; i--) {
     bugs[i].move();
@@ -29,8 +27,6 @@ function drawFire(mouseX, mouseY) {
   bugs.push(c);
 }
 
-
-
 class Bug {
   constructor(tempX, tempY, tempR) {
     this.x = tempX;
@@ -47,7 +43,6 @@ class Bug {
     } else if (r >= 2) {
       this.color = color(255, 80, 5, 50); // reddish
     }
-
   }
 
   show() {
@@ -65,6 +60,4 @@ class Bug {
     // shrink size over time
     this.radius -= 0.4;
   }
-
-
 }
