@@ -2,7 +2,7 @@ let fontStyle;
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
-const TIME_BUFFER = 100;
+const TIME_BUFFER = 200;
 const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "wai",
@@ -22,7 +22,7 @@ const HAWAIIAN_WORDS = setCoordinates([
   {
     hawaiian: "manu",
     english: "bird",
-    playAnimation: () => { },
+    playAnimation: drawBird,
   },
   {
     hawaiian: "pua",
@@ -38,6 +38,8 @@ const HAWAIIAN_WORDS = setCoordinates([
 const WORD_WIDTH_BUFFER = 50;
 const WORD_HEIGHT_BUFFER = 50;
 const NUM_FISH = 11;
+const NUM_FLOWER = 25;
+const NUM_BIRD = 10;
 
 function preload() {
   fontStyle = loadFont("assets/PlaypenSans-Regular.ttf");
@@ -52,9 +54,14 @@ function setup() {
   for (var i = 0; i < NUM_FISH; i++) {
     fish[i] = new Fish(random(width), random(height), random(0.3, 0.5));
   }
-  //Setup Flower counts
-  for (var j = 0; j < 25; j++) {
+  //Setup flower counts
+  for (var j = 0; j < NUM_FLOWER; j++) {
     flowers[j] = new Flower(random(5, 30));  //generate flowers 
+  }
+
+  //Setup bird counts
+  for (var i = 0; i < NUM_BIRD; i++) {
+    birds[i] = new Bird(random(-10, 0), random(0, height));
   }
 }
 
