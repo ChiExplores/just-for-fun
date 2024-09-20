@@ -3,22 +3,19 @@
  */
 
 var yoff = 0;
-let angle = 0;//put angle here!
+let angle = 0; //put angle here!
 let flowers = []; //array of flowers
 
 function drawFlower() {
-
-  angle += 0.021
+  angle += 0.021;
 
   for (var h = 0; h < flowers.length; h++) {
     flowers[h].move();
-    flowers[h].display();  //diaplay and animate the flowers
+    flowers[h].display(); //display and animate the flowers
   }
 }
 
-
 class Flower {
-
   constructor(tempr) {
     this.x = random(width);
     this.y = random(height);
@@ -38,32 +35,30 @@ class Flower {
     beginShape(); //connect the vertexes
     var xoff = 1000;
     for (var i = 0; i < 4 * PI; i += 0.05) {
-
-      var r = map(noise(xoff, yoff), 0, 1, this.R * 0.6, this.R * 1.4) * sin(2.4 * i);
+      var r =
+        map(noise(xoff, yoff), 0, 1, this.R * 0.6, this.R * 1.4) * sin(2.4 * i);
 
       var x = r * cos(i);
       var y = r * sin(i);
 
-      stroke('white');
-      strokeWeight(.5);
+      stroke("white");
+      strokeWeight(0.5);
 
       xoff += 0.3;
 
       fill(this.r, this.g, this.b, 150); //fill the color randomly
 
       vertex(x, y);
-
     }
     endShape();
     yoff += 0.005;
 
     pop();
-
   }
 
   move() {
-    this.x += this.vx;//let the flowers move and bounce back 
-    this.y += this.vy;
+    this.x += this.vx * 10; //let the flowers move and bounce back
+    this.y += this.vy * 10;
     if (this.x < 0 || this.x > width) {
       this.vx = this.vx * -1;
     }
@@ -71,6 +66,10 @@ class Flower {
       this.vy = this.vy * -1;
     }
   }
+}
 
-
+function setupFlowers() {
+  for (var j = 0; j < NUM_FLOWER; j++) {
+    flowers[j] = new Flower(random(50, 100)); // generate flowers
+  }
 }

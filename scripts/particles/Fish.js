@@ -1,121 +1,75 @@
-/**
- * Adapted from https://editor.p5js.org/slow_izzm/sketches/UdCIoiqIE
- */
-class Fish {
-  constructor(x, y, v) {
-    this.varience = v;
-    this.pos = createVector(x, y);
-    this.vel = createVector();
-    this.acc = createVector();
-    this.h = 40 * this.varience;
-    this.w = 16 * this.varience;
-    this.xoff = 0;
-    this.maxspeed = 0.5 / this.varience;
-    this.dis = 0;
-  }
+//https://www.openprocessing.org/sketch/157576
 
-  update(x, y) {
-    let mouse = createVector(mouseX, mouseY);
-    let dir = createVector();
-    this.dis = dist(this.pos.x, this.pos.y, mouseX, mouseY);
-    if (this.dis < 130) {
-      dir = p5.Vector.sub(this.pos, mouse);
-    } else {
-      dir = createVector(x, y);
-    }
-    this.acc = dir;
-    this.pos.add(this.vel);
-    this.vel.add(this.acc);
-    this.vel.limit(this.maxspeed);
-  }
+var num = 2000;
+var noiseScale = 500,
+  noiseStrength = 1;
+var particles = [num];
 
-  tail() {
-    push();
-    noStroke();
-    angleMode(DEGREES);
-    translate(this.pos.x, this.pos.y);
-    rotate(this.vel.heading() + 90);
-    angleMode(RADIANS);
-    for (let i = 0; i < 17; i++) {
-      fill(150 - i * 7, 150 - i * 7, 200, map(this.dis, 0, 255, 255, 0));
-
-      ellipse(
-        sin(this.xoff) * (i * this.varience),
-        i * (4 * this.varience),
-        this.w - sin(i / 6) * (15 * this.varience),
-        this.h - sin(i / 6) * (20 * this.varience),
-      );
-
-      push();
-      translate(this.h * 0.25, this.h * 0);
-      rotate((TWO_PI / 360) * 135);
-      ellipse(0, 0 - i / 3, this.w / (3 + i / 2), this.h / (3 + i / 2));
-      pop();
-
-      push();
-      translate(this.h * -0.25, this.h * 0);
-      rotate((TWO_PI / 360) * 225);
-      ellipse(0, 0 - i / 5, this.w / (4 + i / 2), this.h / (4 + i / 2));
-      pop();
-    }
-    pop();
-
-    let tailSpeed = (this.vel.x + this.vel.y) / 13;
-    tailSpeed = constrain(tailSpeed, -0.3, 0.3);
-    this.xoff += tailSpeed;
-  }
-
-  eyes() {
-    push();
-    angleMode(DEGREES);
-    translate(this.pos.x, this.pos.y);
-    rotate(this.vel.heading() + 90);
-    angleMode(RADIANS);
-    fill(100, 0, 200, map(this.dis, 0, 255, 255, 0));
-    ellipse(this.h * 0.15, this.h * -0.25, this.w * 0.375, this.h * 0.175);
-    ellipse(this.h * -0.15, this.h * -0.25, this.w * 0.375, this.h * 0.175);
-    fill(0, 100, 200, map(this.dis, 0, 255, 255, 0));
-    stroke(0, 100, 200, map(this.dis, 0, 255, 255, 0));
-    ellipse(this.h * 0.175, this.h * -0.25, this.w * 0.1875, this.h * 0.1);
-    ellipse(this.h * -0.175, this.h * -0.25, this.w * 0.1875, this.h * 0.1);
-    noStroke();
-    fill(250, map(this.dis, 0, 255, 255, 0));
-    ellipse(this.h * 0.175, this.h * -0.275, this.w * 0.0625, this.h * 0.025);
-    ellipse(this.h * -0.175, this.h * -0.275, this.w * 0.0625, this.h * 0.025);
-    pop();
-  }
-
-  checkEdges() {
-    if (this.pos.x < -40) {
-      this.pos.x = width + 40;
-    }
-    if (this.pos.x > width + 40) {
-      this.pos.x = -40;
-    }
-    if (this.pos.y < -40) {
-      this.pos.y = height + 40;
-    }
-    if (this.pos.y > height + 40) {
-      this.pos.y = -40;
-    }
-  }
-
-  render(x, y) {
-    this.update(x, y);
-    this.checkEdges();
-    this.tail();
-    this.eyes();
+function setupFish() {
+  noStroke();
+  for (let i = 0; i < num; i++) {
+    //x value start slightly outside the right of canvas, z value how close to viewer
+    var loc = createVector(random(width * 1.2), random(height), 2);
+    var angle = 0; //any value to initialize
+    var dir = createVector(cos(angle), sin(angle));
+    var speed = random(0.5, 2);
+    // var speed = random(5,map(mouseX,0,width,5,20));   // faster
+    particles[i] = new Particle(loc, dir, speed);
   }
 }
 
-let fish = [];
-let xoff = 0;
 function drawFish() {
-  for (let i = 0; i < fish.length; i++) {
-    let x = map(noise(i + xoff), 0, 1, -0.1, 0.1);
-    let y = map(noise(i + xoff + 1), 0, 1, -0.1, 0.1);
-
-    fish[i].render(x, y);
+  fill(0, 10);
+  noStroke();
+  rect(0, 0, width, height);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].run();
   }
-  xoff += 0.01;
+}
+
+class Particle {
+  constructor(_loc, _dir, _speed) {
+    this.loc = _loc;
+    this.dir = _dir;
+    this.speed = _speed;
+    // var col;
+  }
+  run() {
+    this.move();
+    this.checkEdges();
+    this.update();
+  }
+  move() {
+    let angle =
+      noise(
+        this.loc.x / noiseScale,
+        this.loc.y / noiseScale,
+        frameCount / noiseScale,
+      ) *
+      TWO_PI *
+      noiseStrength; //0-2PI
+    this.dir.x = cos(angle);
+    this.dir.y = sin(angle);
+    var vel = this.dir.copy();
+    var d = 1; //direction change
+    vel.mult(this.speed * d); //vel = vel * (speed*d)
+    this.loc.add(vel); //loc = loc + vel
+  }
+  checkEdges() {
+    //float distance = dist(width/2, height/2, loc.x, loc.y);
+    //if (distance>150) {
+    if (
+      this.loc.x < 0 ||
+      this.loc.x > width ||
+      this.loc.y < 0 ||
+      this.loc.y > height
+    ) {
+      this.loc.x = random(width * 1.2);
+      this.loc.y = random(height);
+    }
+  }
+  update() {
+    fill(0, 255, 255);
+    ellipse(this.loc.x, this.loc.y, this.loc.z);
+  }
 }

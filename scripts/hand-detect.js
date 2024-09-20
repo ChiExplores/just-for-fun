@@ -7,9 +7,9 @@ let updateNote = document.getElementById("updatenote");
 
 let isVideo = false;
 let model = null;
-let timeMap = new Map();
-const objectBox = [0, 0, 200, 200];
-const requiredTime = 2000;
+let predX = 0;
+let predY = 0;
+let predMap = new Map();
 
 const modelParams = {
   flipHorizontal: true, // flip e.g for video
@@ -66,17 +66,13 @@ function runDetection() {
     // We can determine by the bounding box of the hand or the center point of the hand's bbox
     // Easiest state is to use the center point of the hand
     predictions.forEach((prediction, i) => {
-      if (prediction.label === "open") {
-        if (isHandWithinBbox(prediction.bbox, objectBox)) {
-          if (!timeMap.get(i)) {
-            console.log("START TIME FOR", i);
-            timeMap.set(i, Date.now());
-          } else if (timeMap.get(i) + requiredTime <= Date.now()) {
-            // Success!
-            console.log("was above threshold for required time!", i);
-            timeMap.set(i, null);
+      if (prediction.label !== "face") {
+        predMap.set(i, [prediction.bbox[0], prediction.bbox[1]]);
+        HAWAIIAN_WORDS.forEach((word) => {
+          if (isHandWithinBbox(prediction.bbox, word.wordX, word.wordY)) {
+            clickWord(word);
           }
-        }
+        });
       }
     });
     // if (predictions)
@@ -87,14 +83,15 @@ function runDetection() {
   });
 }
 
-function isHandWithinBbox(handBbox, otherBbox) {
-  const handCenterX = (handBbox[0] + handBbox[2]) >> 2; // bit shifted for optimization
-  const handCenterY = (handBbox[1] + handBbox[3]) >> 2; // bit shifted for optimization
+function isHandWithinBbox(handBbox, wordX, wordY) {
+  const handCenterX = handBbox[0];
+  const handCenterY = handBbox[1];
+  console.log(handCenterX, handCenterY);
   return (
-    otherBbox[0] <= handCenterX &&
-    handCenterX <= otherBbox[0] + otherBbox[2] && // bounded by x-pos
-    otherBbox[1] <= handCenterY &&
-    handCenterY <= otherBbox[1] + otherBbox[3] // bounded by y-pos
+    wordX - 100 <= handCenterX &&
+    handCenterX <= wordX + WORD_WIDTH_BUFFER + 100 &&
+    wordY - 100 <= handCenterY &&
+    handCenterY <= wordY + WORD_HEIGHT_BUFFER + 100
   );
 }
 
