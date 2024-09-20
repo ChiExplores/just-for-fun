@@ -9,9 +9,10 @@ let isVideo = false;
 let model = null;
 let predX = 0;
 let predY = 0;
+let predMap = new Map();
 
 const modelParams = {
-  flipHorizontal: false, // flip e.g for video
+  flipHorizontal: true, // flip e.g for video
   maxNumBoxes: 5, // maximum number of boxes to detect
   iouThreshold: 0.5, // ioU threshold for non-max suppression
   scoreThreshold: 0.6, // confidence threshold for predictions.
@@ -64,14 +65,15 @@ function runDetection() {
     // Determine if prediction hand is contained within the bounding box of a word.
     // We can determine by the bounding box of the hand or the center point of the hand's bbox
     // Easiest state is to use the center point of the hand
-    predictions.forEach((prediction) => {
-      predX = prediction.bbox[0];
-      predY = prediction.bbox[1];
-      HAWAIIAN_WORDS.forEach((word) => {
-        if (isHandWithinBbox(prediction.bbox, word.wordX, word.wordY)) {
-          clickWord(word);
-        }
-      });
+    predictions.forEach((prediction, i) => {
+      if (prediction.label !== "face") {
+        predMap.set(i, [prediction.bbox[0], prediction.bbox[1]]);
+        HAWAIIAN_WORDS.forEach((word) => {
+          if (isHandWithinBbox(prediction.bbox, word.wordX, word.wordY)) {
+            clickWord(word);
+          }
+        });
+      }
     });
     // if (predictions)
     model.renderPredictions(predictions, canvas, context, video);
@@ -84,11 +86,12 @@ function runDetection() {
 function isHandWithinBbox(handBbox, wordX, wordY) {
   const handCenterX = handBbox[0];
   const handCenterY = handBbox[1];
+  console.log(handCenterX, handCenterY);
   return (
-    wordX <= handCenterX &&
-    handCenterX <= wordX + WORD_WIDTH_BUFFER &&
-    wordY <= handCenterY &&
-    handCenterY <= wordY + WORD_HEIGHT_BUFFER
+    wordX - 100 <= handCenterX &&
+    handCenterX <= wordX + WORD_WIDTH_BUFFER + 100 &&
+    wordY - 100 <= handCenterY &&
+    handCenterY <= wordY + WORD_HEIGHT_BUFFER + 100
   );
 }
 

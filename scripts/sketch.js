@@ -11,6 +11,7 @@ function preload() {
 }
 
 function setup() {
+  noCursor();
   createCanvas(WIDTH, HEIGHT);
   frameRate(FPS);
   textFont(fontStyle, 30);
@@ -21,7 +22,11 @@ function setup() {
 
 function draw() {
   background(0, 30);
-  circle(predX, predY, 10);
+  predMap.forEach((prediction, i) => {
+    console.log(prediction, i);
+    fill("red");
+    circle(prediction[0], prediction[1], 10);
+  });
   // Display hawaiian words on canvas
   HAWAIIAN_WORDS.forEach((word) => {
     push();
@@ -58,7 +63,6 @@ function draw() {
 function mouseClicked() {
   if (!song.isPlaying()) {
     song.play();
-    fullscreen(true);
   }
   HAWAIIAN_WORDS.forEach((word) => {
     if (isWordInBounds(word)) {
