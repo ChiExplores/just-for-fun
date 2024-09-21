@@ -8,9 +8,9 @@ The inspration for this project is created by teamLab
 
  Tech Stack:
 
- - P5.js
+ - (P5.js)[https://p5js.org/]
  - handtrackjs
 
-This projects shows words related to nature in Olelo Hawaii. Using the AI handtracking library, participants can touch each word and the word will burst into artwork.  
+This projects shows words related to nature in Olelo Hawaii. Using the AI handtracking library, participants can touch each word and the word will burst into artwork.  Artwork is adapted by other works we found thorugh the P5.js site.
 
 [video here](https://youtu.be/ZP8re3WPMQ8)
